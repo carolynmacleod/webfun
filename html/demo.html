@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+
+<html>
+	<head>
+		<meta charset="utf-8"/>
+		<!-- <link rel="stylesheet" type="text/css" href="cmacleod.css"> -->
+		<title>Basic Web Programming Demo</title>
+	<script type="application/javascript">
+		// Global variables for my basic development work.
+
+		var square = {size:"5", pos:"1"};
+		var size = 10;
+		var pos = 5;
+
+		function draw() {
+			var canvas = document.getElementById('test');
+			if (canvas.getContext) {
+				var ctx = canvas.getContext('2d');
+				ctx.fillStyle = 'rgb(200, 0 , 0)';
+				ctx.fillRect((square.pos), (300 - square.pos - square.size), square.size, square.size);
+				// ctx.fillRect(pos, pos, size, size);
+				// ctx.fillRect(10, 10, 10, 10);
+
+			}}
+
+		
+		function draw2() {
+			var canvas = document.getElementById('mover');
+			if (canvas.getContext) {
+				var ctx = canvas.getContext('2d');
+				ctx.fillStyle = 'rgb(0, 0, 200)';
+				ctx.fillRect(200, 200, 10, 10);
+			}
+		}
+		function draw3() {
+			var canvas = document.getElementById('game');
+			if (canvas.getContext) {
+			}
+		}
+
+		function space() {
+			square.pos += 4;
+
+			var canvas = document.getElementById('test');
+			if (canvas.getContext) {
+				var ctx = canvas.getContext('2d');
+				ctx.fillStyle = 'rgb(200, 0 , 0)';
+				ctx.fillRect(square.pos, (300 - square.pos - square.size), square.size, square.size);
+			}}
+
+		function drawGameOfLife() {
+			// Conway's game of life demo
+
+			//For a space that is 'populated':
+			//Each cell with one or no neighbors dies, as if by solitude.
+			//Each cell with four or more neighbors dies, as if by overpopulation.
+			//Each cell with two or three neighbors survives.
+			//For a space that is 'empty' or 'unpopulated'
+			//Each cell with three neighbors becomes populated.		
+		
+		
+			var canvas = document.getElementById('test');
+			if (canvas.getContext) {
+				var ctx = canvas.getContext('2d');
+				ctx.fillStyle = 'rgb(200, 0 , 0)';
+				ctx.fillRect((square.pos), (300 - square.pos - square.size), square.size, square.size);
+				// ctx.fillRect(pos, pos, size, size);
+				// ctx.fillRect(10, 10, 10, 10);
+
+		
+			}}
+			
+		function myload() {
+			drawGameOfLife();
+		}
+
+		function keypress(e) {
+		}
+
+	</script>
+	</head>
+	<body onload=myload() >
+		<input type="text" onkeypress=keypress(e)>
+		
+		<p>This is a basic game dev attempt</p>
+
+		<p>
+		<h4>Conway's game of life - basic web programming demo</h4> 
+		<p>
+		
+		<ul>
+			<li>For a space that is 'populated':
+		<ul>
+			<li>Each cell with one or no neighbors dies, as if by solitude.</li>
+			<li>Each cell with four or more neighbors dies, as if by overpopulation.</li>
+			<li>Each cell with two or three neighbors survives.</li></li>
+		</ul>
+		<li>For a space that is 'empty' or 'unpopulated':
+	<ul>
+				<li>Each cell with three neighbors becomes populated.</li>
+			</ul></li></ul>
+
+		<canvas id="test" width="300" height="300" align="left">
+		This is alternate content for my canvas - If this is visible, you have disabled scripting. 
+		</canvas>
+
+		<!--
+		<p>This is a very basic canvas with a static drawing</p>
+
+		<canvas id="mover" width="300" height="300">
+			This is alternate content for my second canvas
+		</canvas>
+		<canvas id="game" width="300" height="300">
+			This is alternate content for my third canvas
+		</canvas>
+		/-->
+
+		<p> This is the end</p>
+	</body>
+</html>
