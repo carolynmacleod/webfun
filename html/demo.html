@@ -12,42 +12,52 @@
 		var size = 10;
 		var pos = 5;
 
-		function draw() {
-			var canvas = document.getElementById('test');
-			if (canvas.getContext) {
-				var ctx = canvas.getContext('2d');
-				ctx.fillStyle = 'rgb(200, 0 , 0)';
-				ctx.fillRect((square.pos), (300 - square.pos - square.size), square.size, square.size);
-				// ctx.fillRect(pos, pos, size, size);
-				// ctx.fillRect(10, 10, 10, 10);
 
-			}}
+// The Game of Life
+// Initialization: Random pattern of living and dead cells. Eventually pull the percentage chance of life from a box.
+
+// Game of Life Variables
+// Grid: Canvas size, each "cell" is say 10 pixels x 10 pixels, compute size of grid based on this
+// Grid array: height/cell x width/cell array of cells
+// Cell object: Alive/Dead status
+//
+
+		var field = {height:'300', width:'300', cell: '10'};
+		var game = {
+			lifeChance: '0.25', 
+			gridHeight: (field.height/field.cell), 
+			gridWidth: (field.width/field.cell)
+		};
+		const lifeStatus = {
+			ALIVE: "alive",
+			DEAD: "dead"
+		};
+		console.log('field', field);
+		console.log('game', game);
+		var grid = createGrid(game.gridHeight, game.gridWidth);
+		console.log('grid', grid);
+		
+
+		function initializeGameOfLife(aliveProbability) {
+			// initialize grid 2d array to alive/dead statuses
+			for (var i=0; i<grid.length; i++) {
+				for (var j=0; j<grid[i].length; j++) {
+					if (Math.random() < game.lifeChance) {
+						grid[i][j] = lifeStatus.ALIVE;
+					} else {
+						grid [i][j] = lifeStatus.DEAD;
+					}}}}
+
+		function createGrid(height, width) {
+			var arr = [];
+			for (var i = 0; i < height; i++) {
+				arr[i] = new Array(width);
+			}
+			return arr;
+		}
+
 
 		
-		function draw2() {
-			var canvas = document.getElementById('mover');
-			if (canvas.getContext) {
-				var ctx = canvas.getContext('2d');
-				ctx.fillStyle = 'rgb(0, 0, 200)';
-				ctx.fillRect(200, 200, 10, 10);
-			}
-		}
-		function draw3() {
-			var canvas = document.getElementById('game');
-			if (canvas.getContext) {
-			}
-		}
-
-		function space() {
-			square.pos += 4;
-
-			var canvas = document.getElementById('test');
-			if (canvas.getContext) {
-				var ctx = canvas.getContext('2d');
-				ctx.fillStyle = 'rgb(200, 0 , 0)';
-				ctx.fillRect(square.pos, (300 - square.pos - square.size), square.size, square.size);
-			}}
-
 		function drawGameOfLife() {
 			// Conway's game of life demo
 
@@ -62,25 +72,112 @@
 			var canvas = document.getElementById('test');
 			if (canvas.getContext) {
 				var ctx = canvas.getContext('2d');
-				ctx.fillStyle = 'rgb(200, 0 , 0)';
-				ctx.fillRect((square.pos), (300 - square.pos - square.size), square.size, square.size);
-				// ctx.fillRect(pos, pos, size, size);
-				// ctx.fillRect(10, 10, 10, 10);
-
+				for (var i=0; i<grid.length; i++) {
+					for (var j=0; j<grid[i].length; j++) {
+						if (grid[i][j] == lifeStatus.ALIVE) {
+							ctx.fillStyle = 'rgb(200, 0, 0)';
+						}
+						else {
+							ctx.fillStyle = 'rgb(0, 200, 0)';
+						}
+						ctx.fillRect((i*field.cell), (j*field.cell), (field.cell-1), (field.cell-1));
+				}}
 		
 			}}
+		function updateGameOfLife() {
+			var updatedStatusGrid = createGrid(grid.length, grid[0].length);
+			// Update to copy of grid
+			for (var i=0; (i<grid.length); i++) {
+				for (var j=0; (j<grid[i].length); j++) {
+					var neighbours = 0;
+					// Count "ALIVE" neighbours
+					if (i > 0) {
+						if (j > 0) {
+							if (grid[i-1][j-1] == lifeStatus.ALIVE) {
+								neighbours ++;
+							}
+						}
+						if (grid[i-1][j] == lifeStatus.ALIVE) {
+							neighbours++;
+						}
+						if (j < (grid[i].length - 1)) {
+							if (grid[i-1][j+1] == lifeStatus.ALIVE) {
+								neighbours ++;
+							}
+						}
+					}
+					if (i < (grid.length -1)) {
+						if (j > 0) {
+							if (grid[i + 1][j-1] == lifeStatus.ALIVE) {
+								neighbours ++;
+							}
+						}
+						if (grid[i+1][j] == lifeStatus.ALIVE) {
+							neighbours++;
+						}
+						if (j < (grid[i].length - 1)) {
+							if (grid[i+1][j+1] == lifeStatus.ALIVE) {
+								neighbours ++;
+							}
+						}
+					}
+					if (j > 0) {
+						if (grid[i][j-1] == lifeStatus.ALIVE) {
+							neighbours ++;
+						}
+					}
+					if (j < (grid[i].length - 1)) {
+						if (grid[i][j+1] == lifeStatus.ALIVE) {
+							neighbours ++;
+						}
+					}
+					if (grid[i][j] == lifeStatus.ALIVE) {
+						if ((neighbours < 2) || (neighbours > 3)) {
+							updatedStatusGrid[i][j] = lifeStatus.DEAD;
+						}
+						else {
+							updatedStatusGrid[i][j] = lifeStatus.ALIVE;
+						}
+					}
+					else {
+						if (neighbours > 2) {
+							updatedStatusGrid[i][j] = lifeStatus.ALIVE;
+						}
+						else {
+							updatedStatusGrid[i][j] = lifeStatus.DEAD;
+						}
+					}
+
+				}
+			}
+			// copy updated status back
+			grid = updatedStatusGrid;
+
+		}
 			
 		function myload() {
+			initializeGameOfLife(game.lifeChance);
 			drawGameOfLife();
 		}
 
-		function keypress(e) {
+		function keymanage() {
+			console.log('keyup function', '' );
+			updateGameOfLife();
+			drawGameOfLife();
 		}
 
+		window.addEventListener("keypress", function (evt) {
+			console.log('keyup function', '' );
+			var SPACEBAR = 32;
+			if (evt.which === SPACEBAR) {
+        			updateGameOfLife();
+				drawGameOfLife();
+		        	evt.preventDefault();
+		    }
+		});
 	</script>
 	</head>
 	<body onload=myload() >
-		<input type="text" onkeypress=keypress(e)>
 		
 		<p>This is a basic game dev attempt</p>
 
@@ -100,9 +197,16 @@
 				<li>Each cell with three neighbors becomes populated.</li>
 			</ul></li></ul>
 
+
+		<p>
+		Reload the page to reinitialze the grid with a random starting configuration. Press the space bar to update the
+		display.
+		<p><p>
+
 		<canvas id="test" width="300" height="300" align="left">
 		This is alternate content for my canvas - If this is visible, you have disabled scripting. 
 		</canvas>
+
 
 		<!--
 		<p>This is a very basic canvas with a static drawing</p>
