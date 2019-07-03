@@ -22,6 +22,8 @@
 // Cell object: Alive/Dead status
 //
 
+// "Real World" clean up - make sure that all magic numbers are declared constants, programatically create fields w defaults and update button
+
 		var field = {height:'300', width:'300', cell: '10'};
 		var game = {
 			lifeChance: '0.20', 
@@ -78,6 +80,15 @@
 			grid [(game.gridHeight - 3)][7] = lifeStatus.ALIVE;
 			grid [(game.gridHeight - 3)][9] = lifeStatus.ALIVE;
 			grid [(game.gridHeight - 4)][8] = lifeStatus.ALIVE;
+
+			// Spinners
+			grid [3][6] = lifeStatus.ALIVE;
+			grid [3][7] = lifeStatus.ALIVE;
+			grid [3][8] = lifeStatus.ALIVE;
+		
+			grid [9][6] = lifeStatus.ALIVE;
+			grid [10][6] = lifeStatus.ALIVE;
+			grid [11][6] = lifeStatus.ALIVE;
 		
 		}
 
@@ -286,12 +297,14 @@
 	<body onload=myload() >
 		
 		<p>I've thought I should learn a little web programming for a while, this is a first attempt at doing 
-		straight HTML/javascript programming. Once this is done, I'll look into angular and maybe some back end
+		straight HTML/javascript programming. I have heard angular is the big thing for front ends these days,
+		but I thought a little straight web scripting was a good start. 
 		work. As my experience is more focused on C/C++ application programming, with a little python, the code 
-		may reflect some misunderstandings of web work</p>
+		may reflect some misunderstandings of web work, and I definitely am still working on fully understanding 
+		what's going on with the object types and the typing in javascript. </p>
 
 		<p>
-		<h4>Conway's game of life - basic web programming demo</h4> 
+		<h4>Conway's game of life - basic web programming</h4> 
 		<p>
 		
 		<ul>
@@ -311,11 +324,13 @@
 
 
 		<p>
-		Reload the page to reinitialze the grid with a random starting configuration. Press the space bar to update the
-		display.
+		Reload the page to reinitialze the grid with a random starting configuration. Press the space bar 
+		or the "Update Game" button to update the
+		display based on the rules.
 		<p>
-		Starting conditions - reload uses a default density (0.10) of "live" cells, and a default 30x30 grid. Use the 
-		textboxes below, and the "Reset with parameters" button to reconfigure 
+		Starting conditions - reload uses a default density (0.20) of "live" cells, and a default 30x30 grid. Use the 
+		textboxes below, and the "Reset with parameters" button to reconfigure the game. Parameters are not checked for 
+		validity, but as this is client-only scripting any error conditions can be cleared by reloading the page. 
 		<p>
 		<form name="config">
 			<h5>Field Size</h5>
@@ -345,7 +360,9 @@
 		This is alternate content for my canvas - If this is visible, you have disabled scripting. 
 		</canvas><p><p>
 		<button value="UpdateGame" onclick=updateGame()>Update Game</button>
+		<p>
 
+		
 
 		<!--
 		<p>This is a very basic canvas with a static drawing</p>
